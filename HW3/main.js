@@ -51,9 +51,9 @@ console.log(numberIArr);
 // xxxxx
 
 const arrPyr = [];
-let topPyr = 0;
-while (topPyr < 20) {
-  topPyr++;
+let strPyr = "";
+for (let i = 0; i < 20; i++) {
   arrPyr.push("x");
-  console.log(arrPyr);
+  strPyr = arrPyr.join("");
+  console.log(strPyr);
 }
