@@ -31,7 +31,7 @@ function basket() {
   console.log(basketArr);
   let sumBasket = 0;
   for (let i = 0; i < basketArr.length; i++) {
-    sumBasket += parseInt(basketArr[i]);
+    sumBasket += basketArr[i];
   }
   console.log(`Сумма товаров составляет: ${sumBasket} местной валюты`);
 }
