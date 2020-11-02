@@ -48,21 +48,123 @@
           justify-content: space-between;
 }
 
-.header_logo-and-shopping-cart {
+.header__basket {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  position: relative;
 }
 
-.header_shopping-cart_total_price {
-  margin-left: 17px;
+.header__basket__button {
+  outline: none;
+  background-color: #fff;
+  border: 0;
+  cursor: pointer;
+}
+
+.header__basket__button:hover #basket-button {
+  fill: #000;
+}
+
+.header__basket__price {
   font-family: "BebasNeue";
-  font-size: 33px;
+  font-size: 20px;
   line-height: 19px;
-  color: #a1a1a1;
+  color: #fff;
+  text-align: center;
+}
+
+.header__basket__items {
+  border: 1px solid #000;
+  position: absolute;
+  top: 120px;
+  left: -110px;
+  min-width: 350px;
+}
+
+.header__basket__items_item {
+  border-bottom: 1px solid #000;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+}
+
+.header__basket__open {
+  display: block;
+}
+
+.header__basket__close {
+  display: none;
+}
+
+.header_basket_text {
+  font-family: "BebasNeue";
+  font-size: 18px;
+  line-height: 19px;
+  text-align: center;
+}
+
+.header__basket__items_head p, .header__basket__items_item p, .header__basket__items__empty {
+  padding: 5px 0;
+  font-family: "BebasNeue";
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  text-align: center;
+}
+
+.header__basket__items_name {
+  min-width: 120px;
+}
+
+.header__basket__items_count {
+  border-left: 1px solid #000;
+}
+
+.header__basket__items_price {
+  min-width: 90px;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+
+.header__basket__items_quantity_btn-minus {
+  position: absolute;
+  top: 18px;
+  left: 124px;
+  padding: 0 6px;
+  border-radius: 100%;
+  font-family: "BebasNeue";
+  font-size: 18px;
+  outline: none;
+  background-color: #39c8b3;
+  cursor: pointer;
+}
+
+.header__basket__items_quantity_btn-minus:hover {
+  color: #000;
+}
+
+.header__basket__items_quantity_btn-plus {
+  position: absolute;
+  top: 18px;
+  left: 164px;
+  padding: 0 6px;
+  border-radius: 100%;
+  font-family: "BebasNeue";
+  font-size: 18px;
+  outline: none;
+  background-color: #39c8b3;
+  cursor: pointer;
+}
+
+.header__basket__items_quantity_btn-plus:hover {
+  color: #000;
 }
 
 .nav {
@@ -243,7 +345,7 @@
           justify-content: space-between;
   -ms-flex-line-pack: distribute;
       align-content: space-around;
-  margin: 48px 38px 73px;
+  margin: 48px 38px 30px;
 }
 
 .featured-products_list {
@@ -259,45 +361,35 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   border: 1px solid #f3f3f3;
   border-bottom-width: 5px;
   border-bottom-color: #3cc395;
   -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.16);
           box-shadow: 0 0 3px rgba(0, 0, 0, 0.16);
   padding: 25px 0 35px;
-}
-
-.featured-products_list_mar-bot {
   margin-bottom: 45px;
 }
 
 .featured-products_list_title {
-  color: #afafaf;
-  font-family: "BebasNeue";
-  font-size: 27px;
-  line-height: 25px;
   margin-top: 13px;
   margin-bottom: 12px;
 }
 
-.featured-products_list_price-and-button {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.featured-products_list_price {
+.featured-products_list_title, .featured-products_list_price {
   color: #afafaf;
   font-family: "BebasNeue";
   font-size: 27px;
   line-height: 25px;
 }
 
+.featured-products_list_price {
+  margin-bottom: 10px;
+}
+
 .featured-products_list_button {
-  margin-left: 15px;
   font-family: "BebasNeue";
   padding: 10px;
   font-weight: 700;
