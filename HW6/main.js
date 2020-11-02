@@ -1,98 +1,207 @@
-// Открытие и закрытие корзины
-let buttonBasket = document.querySelector(".header__basket__button");
-let divBasket = document.querySelector(".header__basket__items");
+class Item {
+  name = "";
+  price = 0;
+  img = "";
+  count = 1;
 
-buttonBasket.onclick = function () {
-  divBasket.classList.toggle("header__basket__close");
-};
-// БД товаров
-const localDataBase = [
-  { name: "Branded shoes", price: 300, quantity: 1 },
-  { name: "Brand Levi T-Shirts", price: 100, quantity: 1 },
-  { name: "Branded T-Shirts", price: 150, quantity: 1 },
-  { name: "Leather wallet", price: 50, quantity: 1 },
-  { name: "Ems women bag", price: 90, quantity: 1 },
-  { name: "Branded cargos", price: 220, quantity: 1 },
-];
-// Корзина,подсчет стоимости и количества товаров и вывод их
-function basket() {
-  // class Basket {
-  //   _basketArr = [];
-  //   constructor(...items) {
-  //     console.log(items);
-  //     console.log(...items);
-  //     this._basketArr.push(...items);
-  //   }
-  //   addItem(item) {
-  //     this._basketArr.push(item);
-  //   }
-  //   sumPrice() {
-  //     return this._basketArr.reduce((result, curItem) => {
-  //       return result + curItem.price;
-  //     }, 0);
-  //   }
-  // }
+  constructor(name, price, img) {
+    this.name = name;
+    this.price = price;
+    this.img = img;
+  }
 
-  // class Item {
-  //   _name = "";
-  //   _price = 0;
-  //   _quantity = 1;
-  //   get price() {
-  //     return this._price;
-  //   }
-  //   set name(n) {
-  //     this._name = n;
-  //   }
-  //   constructor(name, price) {
-  //     this._name = name;
-  //     this._price = price;
-  //   }
-  // }
-  // const basketInstance = new Basket();
-  // Массивы для хранения данных при нажатии на кнопку...по другому не знаю как вытащить информацию=( Не работает, не знаю что делать..
-  const nameArr = [],
-    priceArr = [];
-  localDataBase.forEach(function (item, id) {
-    let buttonBasket = document.querySelector(`#btn-${id}`);
-    buttonBasket.addEventListener("click", function () {
-      // Добавление элементов товара в корзину HTML
-      (divItem = document.createElement("div")),
-        (divItemName = document.createElement("p")),
-        (divItemPrice = document.createElement("p")),
-        (divItemQuantity = document.createElement("p"));
-      divItem.classList.toggle(`header__basket__items_item`);
-      document.querySelector(".header__basket__items_head").after(divItem);
-      divItemName.classList.toggle(`header__basket__items_name`);
-      document
-        .querySelector(".header__basket__items_item")
-        .prepend(divItemName);
-      divItemPrice.classList.toggle(`header__basket__items_price`);
-      document
-        .querySelector(".header__basket__items_item")
-        .append(divItemPrice);
-      divItemQuantity.classList.toggle(`header__basket__items_quantity`);
-      document
-        .querySelector(".header__basket__items_item")
-        .append(divItemQuantity);
-      divItemName.innerText = item.name;
-      divItemPrice.innerText = item.price + `$`;
-      divItemQuantity.innerText = item.quantity;
-      nameArr.push(item.name);
-      priceArr.push(item.price);
+  inсCount() {
+    this.count++;
+  }
+  decCount() {
+    this.count--;
+  }
+  addBtnInBasket() {
+    const btn = document.createElement(`button`);
+    btn.classList.add(`featured-products_list_button`);
+    btn.innerHTML = `Buy now`;
 
-      totalPrice = priceArr.reduce(function (sum, current) {
-        return sum + current;
-      }, 0);
-      basketTotalPrice.innerHTML = totalPrice + `$`;
-      console.log(totalPrice);
-      // basketInstance.addItem(new Item(item));
+    btn.addEventListener(`click`, () => {
+      // Паттерн Singleton
+      const BasketInstance = new Basket();
+      BasketInstance.addItem(this);
+      console.log(BasketInstance);
     });
-  });
-  let totalPrice = priceArr.reduce(function (sum, current) {
-    return sum + current;
-  }, 0);
+    return btn;
+  }
+  addBtnMinusItem() {
+    const btn = document.createElement(`button`);
+    btn.classList.add("header__basket__items_quantity_btn-minus");
+    btn.innerHTML = `-`;
 
-  basketTotalPrice = document.querySelector(".header__basket__price");
-  console.log(totalPrice);
+    btn.addEventListener(`click`, () => {
+      // Паттерн Singleton
+      const BasketInstance = new Basket();
+      BasketInstance.removeItem(this);
+    });
+    return btn;
+  }
+  addBtnPlusItem() {
+    const btn = document.createElement(`button`);
+    btn.classList.add("header__basket__items_quantity_btn-plus");
+    btn.innerHTML = `+`;
+
+    btn.addEventListener(`click`, () => {
+      // Паттерн Singleton
+      const BasketInstance = new Basket();
+      BasketInstance.addItem(this);
+    });
+    return btn;
+  }
+  getMainTemplate() {
+    const { name, price, img } = this; // Деструктурирующее присваивание
+    const wrapper = document.createElement(`div`);
+    wrapper.classList.add(`featured-products_list`);
+    wrapper.innerHTML = `
+    <img src="${img}" alt="${name}" />
+    <h3 class="featured-products_list_title">${name}</h3>
+      <p class="featured-products_list_price">${price}$</p>
+    `;
+    wrapper.appendChild(this.addBtnInBasket());
+    return wrapper;
+  }
+
+  getBasketTemplate() {
+    const { name, price, count } = this; // Деструктурирующее присваивание
+    const wrapper = document.createElement(`div`);
+    wrapper.classList.add(`header__basket__items_item`);
+    wrapper.innerHTML = `
+      <p class="header__basket__items_name">Name:<br> ${name}</p>
+      <p class="header__basket__items_count">Count:<br> ${count}</p>
+      <p class="header__basket__items_price">Price 1 item:<br> ${price}$</p>
+      <p class="header__basket__items_total">Total:<br> ${count * price}$</p>
+    `;
+    wrapper.appendChild(this.addBtnMinusItem());
+    wrapper.appendChild(this.addBtnPlusItem());
+    return wrapper;
+  }
 }
-basket();
+
+class List {
+  items = [];
+
+  constructor(items = []) {
+    this.items = items;
+  }
+
+  findRepeat(Repeat) {
+    return this.items.filter((item) => item.name === Repeat.name)[0];
+  }
+  addItem(item) {
+    const repeat = this.findRepeat(item);
+    if (repeat) {
+      repeat.inсCount();
+    } else {
+      this.items.push(item);
+    }
+    this.render();
+  }
+  removeItem(item) {
+    const exists = this.findRepeat(item);
+    if (!exists) {
+      return;
+    }
+    if (exists.count > 1) {
+      exists.decCount();
+    } else {
+      this.items = this.items.filter((Repeat) => item.name !== Repeat.name);
+    }
+    this.render();
+  }
+  render() {}
+}
+
+class Basket extends List {
+  constructor(items) {
+    if (Basket._instance) {
+      // Паттерн Singleton
+      return Basket._instance;
+    }
+    super(items);
+    this.openBasket();
+    Basket._instance = this; // Паттерн Singleton
+  }
+  openBasket() {
+    let buttonBasket = document.querySelector(".header__basket__button");
+    let divBasket = document.querySelector(".header__basket__items");
+    buttonBasket.addEventListener(`click`, () => {
+      divBasket.classList.toggle("header__basket__close");
+    });
+  }
+  getSumTemplate() {
+    const sum = this.items.reduce((sum, item) => {
+      return sum + item.price * item.count;
+    }, 0);
+
+    const sumBlock = document.createElement("p");
+    sumBlock.classList.add("header__basket__price");
+    sumBlock.innerHTML = `Total price: ${sum}$`;
+
+    return sumBlock;
+  }
+  getEmptyTemplate() {
+    const sumBlock = document.createElement("div");
+    sumBlock.classList.add("header__basket__items__empty");
+    sumBlock.innerHTML = `Cart is empty`;
+
+    return sumBlock;
+  }
+  render() {
+    const placeToRender = document.querySelector(`.header__basket__items`);
+    if (!placeToRender) {
+      return;
+    }
+    placeToRender.innerHTML = "";
+    this.items.forEach((item) => {
+      const template = item.getBasketTemplate();
+      placeToRender.appendChild(template);
+    });
+
+    if (this.items.length) {
+      placeToRender.appendChild(this.getSumTemplate());
+    } else {
+      placeToRender.appendChild(this.getEmptyTemplate());
+    }
+  }
+}
+
+class ItemList extends List {
+  constructor(items) {
+    super(items);
+  }
+  render() {
+    const placeToRender = document.querySelector(`.featured-products_wrap`);
+    if (!placeToRender) {
+      return;
+    }
+    placeToRender.innerHTML = "";
+    this.items.forEach((item) => {
+      const template = item.getMainTemplate();
+      placeToRender.appendChild(template);
+    });
+  }
+}
+
+// Товары
+const Item0 = new Item("Branded shoes", 300, "img/catalog/id0.png");
+const Item1 = new Item("Brand Levi T-Shirts", 100, "img/catalog/id1.png");
+const Item2 = new Item("Branded T-Shirts", 150, "img/catalog/id2.png");
+const Item3 = new Item("Leather wallet", 50, "img/catalog/id3.png");
+const Item4 = new Item("Ems women bag", 90, "img/catalog/id4.png");
+const Item5 = new Item("Branded cargos", 220, "img/catalog/id5.png");
+// Добавление товаров на страницу
+const ItemListInstance = new ItemList();
+ItemListInstance.addItem(Item0);
+ItemListInstance.addItem(Item1);
+ItemListInstance.addItem(Item2);
+ItemListInstance.addItem(Item3);
+ItemListInstance.addItem(Item4);
+ItemListInstance.addItem(Item5);
+ItemListInstance.render();
+// Реализация корзины
+const BasketInstance = new Basket();
